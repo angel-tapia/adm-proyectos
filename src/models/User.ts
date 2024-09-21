@@ -1,5 +1,3 @@
-// User.ts
-
 export interface User {
   id: number; // Primary Key
   username: string;
