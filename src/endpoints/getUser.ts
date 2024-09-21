@@ -16,7 +16,5 @@ export function getUser() {
     },
   });
 
-  return apiClient.get<User>(
-    `${ENDPOINT}`
-  );
+  return apiClient.get<User>(`${ENDPOINT}`);
 }
