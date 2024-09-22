@@ -1,0 +1,27 @@
+.tabs-container {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    gap: 1px;
+}
+
+.tabs-container a {
+    width: 33.33%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    background-color: hsl(214, 100%, 55%);
+    transition: all 0.25s ease;
+}
+
+.tabs-container a:hover {
+    background-color: hsl(214, 100%, 45%);
+}
+
+.icon {
+    font-size: 1.5rem;
+    color: white;
+    padding: 1rem;
+    transition: color 0.2s ease-in;
+}

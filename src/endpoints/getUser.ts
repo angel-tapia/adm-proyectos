@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { User } from '../models';
 import * as dotenv from 'dotenv';
+import { User } from '../models/User';
 
 dotenv.config();
 
