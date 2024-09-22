@@ -1,0 +1,26 @@
+/* BottomTabBar.css */
+
+.tab-bar {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #ffffff;
+  border-top: 1px solid #ccc;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.tab-item:hover {
+  background-color: #f0f0f0;
+}
+
+.tab-text {
+  display: block;
+  font-size: 12px;
+  margin-top: 5px;
+}
