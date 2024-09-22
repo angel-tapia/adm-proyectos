@@ -9,3 +9,4 @@ export * from './JobPosition';
 export * from './MonthlyReport';
 export * from './Role';
 export * from './Schedule';
+export * from './User';
