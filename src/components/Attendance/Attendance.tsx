@@ -1,4 +1,3 @@
-// Asistencia.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Stack,
@@ -6,13 +5,10 @@ import {
   PrimaryButton,
   IIconProps,
   Spinner,
-  initializeIcons,
   IStackTokens,
 } from '@fluentui/react';
 import './Attendance.css';
 
-// Initialize icons
-initializeIcons();
 
 const cameraIcon: IIconProps = { iconName: 'Camera' };
 

@@ -3,8 +3,8 @@ import './App.css';
 import BottomTabBar from './components/TabBar/TabBar';
 import Attendance from './components/Attendance/Attendance';
 import { initializeIcons } from '@fluentui/react';
-initializeIcons();
 
+initializeIcons();
 
 function App() {
   return (
