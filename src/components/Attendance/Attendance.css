@@ -1,0 +1,33 @@
+/* Asistencia.css */
+
+.date-time {
+  margin: 10px 0;
+}
+
+.attendance-status {
+  margin-top: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-top: 75%; /* 4:3 Aspect Ratio */
+  overflow: hidden;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.video-feed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.recognizing {
+  margin-top: 20px;
+  text-align: center;
+}
