@@ -18,7 +18,7 @@ const cameraIcon: IIconProps = { iconName: 'Camera' };
 
 const stackTokens: IStackTokens = { childrenGap: 15 };
 
-const Asistencia: React.FC = () => {
+const Attendance: React.FC = () => {
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
   const [attendanceStatus, setAttendanceStatus] = useState<string>('');
   const [isRecognizing, setIsRecognizing] = useState<boolean>(false);
@@ -138,4 +138,4 @@ const Asistencia: React.FC = () => {
   );
 };
 
-export default Asistencia;
+export default Attendance;
