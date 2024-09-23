@@ -1,9 +1,10 @@
 .tabs-container {
     width: 100%;
-    position: fixed;
-    bottom: 0;
     display: flex;
-    gap: 1px;
+    gap: 1px;    
+    background-color: white;
+    position: sticky;
+    bottom: 0;
 }
 
 .tabs-container a {
@@ -22,6 +23,6 @@
 .icon {
     font-size: 1.5rem;
     color: white;
-    padding: 1rem;
+    padding: 0.7rem;
     transition: color 0.2s ease-in;
 }
