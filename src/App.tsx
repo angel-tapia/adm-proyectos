@@ -12,6 +12,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Attendance />} />
         <Route path="/home" element={<Attendance />} />
         <Route path="/register" element={<EmployeeSignup />} />
         <Route path="/reports" element={<ReportesAsistencia />} />
