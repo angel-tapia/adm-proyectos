@@ -126,7 +126,7 @@ export default function EmployeeSignup() {
     >
       {!isCameraActive && (
         <>
-          <Text variant="xLarge">Registro de Empleados</Text>
+          <Text variant="xxLarge" color='#f5f5f5'>Registro de Empleados</Text>
           <TextField
             name="username"
             required
@@ -134,6 +134,7 @@ export default function EmployeeSignup() {
             label="Nombre:"
             onChange={handleTextInputChange}
             value={userData.username}
+            className='text-input'
           />
           <TextField
             name="email"
@@ -141,7 +142,8 @@ export default function EmployeeSignup() {
             autoComplete="off"
             label="Correo:"
             onChange={handleTextInputChange}
-            value={userData.email}
+            value={userData.email}            
+            className='text-input'
           />
           <TextField
             name="password"
@@ -152,6 +154,7 @@ export default function EmployeeSignup() {
             label="Contraseña:"
             onChange={handleTextInputChange}
             value={userData.password}
+            className='text-input'
           />
           <Dropdown
             label="Puesto:"
@@ -160,23 +163,27 @@ export default function EmployeeSignup() {
             responsiveMode={ResponsiveMode.large}
             selectedKey={userData.role_id}
             onChange={handleDropdownChange}
+            className='text-input'
           />
           <Dropdown
             label="Horario:"
             options={optionsHorario}
             required
             responsiveMode={ResponsiveMode.large}
+            className='text-input'
           />
           <PrimaryButton
             text="Capturar rostro"
             style={{ marginTop: '12px' }}
             iconProps={cameraIcon}
             onClick={openCamera}
+            className='text-input'
           />
           <PrimaryButton
             text="Guardar"
             onClick={saveUser}
             disabled={imgSrc === undefined}
+            className='text-input'
           />
         </>
       )}
@@ -200,7 +207,7 @@ export default function EmployeeSignup() {
         </div>
       )}
 
-      <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
+      <canvas ref={canvasRef} style={{ display: 'none'}}></canvas>
       {!isCameraActive && <img src={imgSrc} alt="" />}
     </Stack>
   );

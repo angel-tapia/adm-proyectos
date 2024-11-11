@@ -1,4 +1,8 @@
 /* Asistencia.css */
+.asistencia-card {
+  display: flex;
+  flex-grow: 1;
+}
 
 .date-time {
   margin: 10px 0;
