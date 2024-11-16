@@ -7,8 +7,8 @@ import {
   Spinner,
   IStackTokens,
 } from '@fluentui/react';
+import axios from 'axios';
 import './Attendance.css';
-
 
 const cameraIcon: IIconProps = { iconName: 'Camera' };
 
@@ -20,10 +20,8 @@ const Attendance: React.FC = () => {
   const [isRecognizing, setIsRecognizing] = useState<boolean>(false);
   const [isCameraActive, setIsCameraActive] = useState<boolean>(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
-
-  const workStartTime = new Date();
-  workStartTime.setHours(9, 0, 0, 0); // Start work at 9:00 AM
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -33,12 +31,12 @@ const Attendance: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const handleTakePicture = async () => {
-    setIsCameraActive(true);
-    setAttendanceStatus('');
-    setIsRecognizing(false);
-
+  const handleStartCameraAndCapture = async () => {
     try {
+      setIsCameraActive(true);
+      setAttendanceStatus('');
+      setIsRecognizing(false);
+
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: true,
       });
@@ -48,40 +46,68 @@ const Attendance: React.FC = () => {
         videoRef.current.srcObject = mediaStream;
         videoRef.current.play();
       }
-
-      setTimeout(async () => {
-        setIsRecognizing(true);
-
-        mediaStream.getTracks().forEach((track) => track.stop());
-        setIsCameraActive(false);
-
-        // Simulate API call to take picture and get employee data
-        await fakeApiCall('/api/take-picture');
-
-        // If it is succesful, get employee data
-        await fakeApiCall('/api/get-employee-data');
-
-        // Determine attendance status
-        if (currentTime > workStartTime) {
-          setAttendanceStatus('Retardo');
-        } else {
-          setAttendanceStatus('¡Bienvenido!');
-        }
-        setIsRecognizing(false);
-      }, 3000); // 3-second delay to simulate recognition
     } catch (error) {
       console.error('Error accessing camera:', error);
       setIsCameraActive(false);
     }
   };
 
-  const fakeApiCall = (endpoint: string) => {
-    return new Promise<{ success: boolean }>((resolve) => {
-      setTimeout(() => {
-        console.log(`Called endpoint: ${endpoint}`);
-        resolve({ success: true });
-      }, 500);
-    });
+  const captureAndSend = async () => {
+    if (videoRef.current && canvasRef.current) {
+      const canvas = canvasRef.current;
+      const context = canvas.getContext('2d');
+
+      if (context) {
+        // Set canvas size to match the video feed
+        canvas.width = videoRef.current.videoWidth;
+        canvas.height = videoRef.current.videoHeight;
+
+        // Draw the video frame to the canvas
+        context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+
+        // Convert canvas to Base64 and remove the prefix
+        const base64Image = canvas.toDataURL('image/png');
+        const base64ImageWithoutPrefix = base64Image.replace(
+          /^data:image\/png;base64,/,
+          ''
+        );
+
+        // Stop the camera
+        if (mediaStreamRef.current) {
+          mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+          mediaStreamRef.current = null;
+        }
+        setIsCameraActive(false);
+
+        // Send the image to the API
+        try {
+          setIsRecognizing(true);
+          const response = await axios.post(
+            'http://127.0.0.1:8000/app/validar-asistencia/',
+            {
+              foto: base64ImageWithoutPrefix,
+            }
+          );
+
+          // Handle the response
+          const { asistencia, retardo, empleado } = response.data;
+
+          // Construct the attendance status message
+          const message = `
+            Empleado: ${empleado}
+            Asistencia: ${asistencia ? 'Presente' : 'Ausente'}
+            Retardo: ${retardo ? 'Sí' : 'No'}
+          `;
+
+          setAttendanceStatus(message);
+        } catch (error) {
+          console.error('Error validating attendance:', error);
+          setAttendanceStatus('Error al validar asistencia');
+        } finally {
+          setIsRecognizing(false);
+        }
+      }
+    }
   };
 
   return (
@@ -107,17 +133,20 @@ const Attendance: React.FC = () => {
 
       {!isCameraActive && !isRecognizing && !attendanceStatus && (
         <PrimaryButton
-          text="Tomar Foto"
+          text="Iniciar Cámara y Tomar Foto"
           iconProps={cameraIcon}
-          onClick={handleTakePicture}
+          onClick={handleStartCameraAndCapture}
         />
       )}
 
       {isCameraActive && (
         <div className="video-container">
           <video ref={videoRef} className="video-feed" />
+          <PrimaryButton text="Capturar y Enviar" onClick={captureAndSend} />
         </div>
       )}
+
+      <canvas ref={canvasRef} style={{ display: 'none' }} />
 
       {isRecognizing && (
         <div className="recognizing">
@@ -126,8 +155,10 @@ const Attendance: React.FC = () => {
       )}
 
       {attendanceStatus && (
-        <Text variant="xxLarge" className="attendance-status">
-          {attendanceStatus}
+        <Text variant="large" className="attendance-status">
+          {attendanceStatus.split('\n').map((line, index) => (
+            <div key={index}>{line}</div>
+          ))}
         </Text>
       )}
     </Stack>
