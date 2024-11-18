@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './AttendanceReports.css';
+import { exportToExcel } from '../../utils/exportToExcel';
 
 const reports = [
   {
@@ -126,6 +127,10 @@ const AttendanceReports = () => {
     return 'critical';
   };
 
+  const handleExport = () => {
+    exportToExcel(selectedReport.empleados, selectedReport.nombre);
+  };
+
   return (
     <div className="scrollable-content">
       <h1>Reportes de Asistencia</h1>
@@ -153,7 +158,7 @@ const AttendanceReports = () => {
             ))}
           </select>
         </div>
-        <button className="export-button">
+        <button className="export-button" onClick={handleExport}>
           <span className="icon">📊</span>
           Exportar Reporte
         </button>
