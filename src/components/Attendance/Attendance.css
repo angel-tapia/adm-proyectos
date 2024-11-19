@@ -1,11 +1,15 @@
 /* Asistencia.css */
+.main-container {
+  height: 100%;
+}
+
 .asistencia-card {
   display: flex;
   flex-grow: 1;
 }
 
 .date-time {
-  margin: 10px 0;
+  margin: 0;
 }
 
 .attendance-status {
@@ -34,4 +38,8 @@
 .recognizing {
   margin-top: 20px;
   text-align: center;
+}
+
+.send-btn {
+  width: 100%;
 }

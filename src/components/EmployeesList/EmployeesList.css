@@ -1,0 +1,94 @@
+.list-container {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+}
+
+.header {
+  height: 5rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  user-select: none;
+  background-color: hsl(210, 95%, 50%);
+  position: relative;
+}
+
+.header h1 {
+  margin: 0;
+  color: white;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.header-btn {
+  height: 32px;
+  width: 32px;
+  margin-top: 0.5rem;
+  margin-right: 1.75rem;
+  color: white;
+  top: 1rem;
+  right: 1.75rem;
+  transition: all 0.5 ease;
+}
+
+.header-btn:active {
+  transform: scale(0.9);
+}
+
+.table {
+  width: 95%;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  user-select: none;
+}
+
+.table-header {
+  margin: 0.5rem 0;
+}
+
+.table-row {
+  height: fit-content;
+  width: 100%;
+  display: grid;
+  gap: 1rem;
+  /* grid-template-columns: 1.5fr 1.5fr 1fr 2fr 1fr 1fr 1fr; */
+  grid-template-columns: 15% 15% 10% 20% 10% 10% 10%;
+  align-items: center;
+  position: relative;
+  overflow-wrap: break-word;
+}
+
+.delete-btn {
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  right: -1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.delete-btn:active {
+  transform: scale(0.9);
+}
+
+.table-row h3 {
+  color: hsl(210, 95%, 60%);
+}
+
+.table h3 {
+  margin: 0;
+}
+
+.table-column {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+}

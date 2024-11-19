@@ -111,56 +111,62 @@ const Attendance: React.FC = () => {
   };
 
   return (
-    <Stack
-      className="asistencia-card"
-      tokens={stackTokens}
-      styles={{
-        root: {
-          width: '90%',
-          maxWidth: '400px',
-          margin: '50px auto',
-          padding: '20px',
-          boxShadow: '0 0 5px rgba(0,0,0,0.2)',
-          borderRadius: '8px',
-          backgroundColor: '#fff',
-        },
-      }}
-    >
-      <Text variant="xLargePlus">Asistencia</Text>
-      <Text variant="large" className="date-time">
-        {currentTime.toLocaleDateString()} {currentTime.toLocaleTimeString()}
-      </Text>
+    <Stack className='main-container'>
+      <header className="header">
+        <h1>Registro de asistencia</h1>
+      </header>
 
-      {!isCameraActive && !isRecognizing && !attendanceStatus && (
-        <PrimaryButton
-          text="Iniciar Cámara y Tomar Foto"
-          iconProps={cameraIcon}
-          onClick={handleStartCameraAndCapture}
-        />
-      )}
-
-      {isCameraActive && (
-        <div className="video-container">
-          <video ref={videoRef} className="video-feed" />
-          <PrimaryButton text="Capturar y Enviar" onClick={captureAndSend} />
-        </div>
-      )}
-
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
-
-      {isRecognizing && (
-        <div className="recognizing">
-          <Spinner label="Reconociendo..." />
-        </div>
-      )}
-
-      {attendanceStatus && (
-        <Text variant="large" className="attendance-status">
-          {attendanceStatus.split('\n').map((line, index) => (
-            <div key={index}>{line}</div>
-          ))}
+      <Stack
+        className="asistencia-card"
+        tokens={stackTokens}
+        styles={{
+          root: {
+            width: '90%',
+            maxWidth: '400px',
+            margin: '50px auto',
+            padding: '20px',
+            boxShadow: '0 0 5px rgba(0,0,0,0.2)',
+            borderRadius: '8px',
+            backgroundColor: '#fff',
+          },
+        }}
+      >
+        <Text variant="xLargePlus">Asistencia</Text>
+        <Text variant="large" className="date-time">
+          {currentTime.toLocaleDateString()} {currentTime.toLocaleTimeString()}
         </Text>
-      )}
+
+        {!isCameraActive && !isRecognizing && !attendanceStatus && (
+          <PrimaryButton
+            text="Iniciar Cámara y Tomar Foto"
+            iconProps={cameraIcon}
+            onClick={handleStartCameraAndCapture}
+          />
+        )}
+
+        {isCameraActive && (
+          <div className="video-container">
+            <video ref={videoRef} className="video-feed" />
+            <PrimaryButton text="Capturar y Enviar" onClick={captureAndSend} className='send-btn' />
+          </div>
+        )}
+
+        <canvas ref={canvasRef} style={{ display: 'none' }} />
+
+        {isRecognizing && (
+          <div className="recognizing">
+            <Spinner label="Reconociendo..." />
+          </div>
+        )}
+
+        {attendanceStatus && (
+          <Text variant="large" className="attendance-status">
+            {attendanceStatus.split('\n').map((line, index) => (
+              <div key={index}>{line}</div>
+            ))}
+          </Text>
+        )}
+      </Stack>
     </Stack>
   );
 };

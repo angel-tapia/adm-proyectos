@@ -1,7 +1,11 @@
 export interface User {
-  id: number; // Primary Key
-  username: string;
-  email: string;
-  password: string;
-  role_id: number; // Foreign Key
+  nombre: string,
+  apellidos: string,
+  correo: string,
+  celular: string,
+  direccion: string,
+  puesto: string,
+  hora_entrada: string,
+  hora_salida: string,
+  imagen: string
 }
