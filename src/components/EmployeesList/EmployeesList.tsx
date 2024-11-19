@@ -81,7 +81,10 @@ export default function EmployeesList() {
           window.alert('Empleado eliminado');
           console.log(response);
         })
-        .catch((error) => console.error('Ocurrio un error. ', error));
+        .catch((error) => {
+          console.error('Ocurrio un error. ', error);
+          alert("Ocurrio un error. Intente de nuevo");
+        });
     }
   }
 

@@ -143,22 +143,25 @@ export default function EmployeeSignup() {
       .then((response) => {
         alert('Usuario registrado exitosamente');
         console.log(response);
+
+        setUserData({
+          nombre: '',
+          apellidos: '',
+          correo: '',
+          celular: '',
+          direccion: '',
+          puesto: '',
+          hora_entrada: '',
+          hora_salida: '',
+          imagen: '',
+        });
+
+        setImgSrc('');
       })
-      .catch((error) => console.error('Ha ocurrido un error. ', error));
-
-    setUserData({
-      nombre: '',
-      apellidos: '',
-      correo: '',
-      celular: '',
-      direccion: '',
-      puesto: '',
-      hora_entrada: '',
-      hora_salida: '',
-      imagen: '',
-    });
-
-    setImgSrc('');
+      .catch((error) => {
+        console.error('Ha ocurrido un error. ', error);
+        alert("Ocurrio un error. Intente de nuevo");
+      });
   }
 
   return (
