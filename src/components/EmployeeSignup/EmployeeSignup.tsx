@@ -105,7 +105,7 @@ export default function EmployeeSignup() {
       // Store image in base64
       const dataURL = canvas.toDataURL('image/png');
       setImgSrc(dataURL);
-      userData.imagen = dataURL;
+      userData.imagen = dataURL.split(',')[1];
     }
 
     // Turn off camera
