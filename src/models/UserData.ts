@@ -1,10 +1,13 @@
-export interface User {
+export interface UserData {
   nombre: string,
-  apellidos: string,
+  apellido: string,
   correo: string,
   celular: string,
   direccion: string,
   puesto: string,
-  horario: string,
+  horario: {
+    entrada: string,
+    salida: string
+  },
   imagen: string
 }
