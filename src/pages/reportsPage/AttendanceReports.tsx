@@ -1,104 +1,37 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './AttendanceReports.css';
 import { exportToExcel } from '../../utils/exportToExcel';
-
-const reports = [
-  {
-    id: 1,
-    nombre: 'Reporte Enero 2024',
-    empleados: [
-      {
-        id: 1,
-        nombre: 'Maria Fernanda Pérez',
-        asistencias: 22,
-        ausencias: 1,
-        tardanzas: 2,
-        horasExtras: 5,
-      },
-      {
-        id: 2,
-        nombre: 'María García',
-        asistencias: 23,
-        ausencias: 0,
-        tardanzas: 1,
-        horasExtras: 3,
-      },
-      {
-        id: 3,
-        nombre: 'Carlos Rodríguez',
-        asistencias: 20,
-        ausencias: 3,
-        tardanzas: 0,
-        horasExtras: 0,
-      },
-    ],
-  },
-  {
-    id: 2,
-    nombre: 'Reporte Febrero 2024',
-    empleados: [
-      {
-        id: 1,
-        nombre: 'Mario Pérez Rodriguez',
-        asistencias: 20,
-        ausencias: 2,
-        tardanzas: 1,
-        horasExtras: 4,
-      },
-      {
-        id: 2,
-        nombre: 'María García',
-        asistencias: 22,
-        ausencias: 1,
-        tardanzas: 0,
-        horasExtras: 2,
-      },
-      {
-        id: 4,
-        nombre: 'Ana Martínez',
-        asistencias: 21,
-        ausencias: 2,
-        tardanzas: 3,
-        horasExtras: 1,
-      },
-    ],
-  },
-  {
-    id: 3,
-    nombre: 'Reporte Marzo 2024',
-    empleados: [
-      {
-        id: 2,
-        nombre: 'María García',
-        asistencias: 23,
-        ausencias: 0,
-        tardanzas: 1,
-        horasExtras: 6,
-      },
-      {
-        id: 4,
-        nombre: 'Ana Martínez',
-        asistencias: 22,
-        ausencias: 1,
-        tardanzas: 2,
-        horasExtras: 3,
-      },
-      {
-        id: 5,
-        nombre: 'Luis Sánchez',
-        asistencias: 23,
-        ausencias: 0,
-        tardanzas: 0,
-        horasExtras: 8,
-      },
-    ],
-  },
-];
+import axios from 'axios';
+import { Report } from '../../models/Report';
+import Loading from './components/Loading';
 
 const AttendanceReports = () => {
-  const [selectedReport, setSelectedReport] = useState(reports[0]);
+  const [reports, setReports] = useState<Report[]>([]);
+  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    // Fetch the reports data from the provided URL
+    axios
+      .get('http://127.0.0.1:8000/app/exportar-reporte/')
+      .then((response) => {
+        console.log('Data received:', response.data); // Verificar los datos recibidos
+        setReports(response.data);
+        setSelectedReport(response.data[0]);
+      })
+      .catch((error) => {
+        console.error('Error fetching reports:', error);
+      });
+  }, []);
+
+  if (!selectedReport) {
+    return (
+      <div className="scrollable-content">
+        <Loading />
+      </div>
+    );
+  }
 
   const filteredEmployees = selectedReport.empleados.filter((employee) =>
     employee.nombre.toLowerCase().includes(search.toLowerCase())
