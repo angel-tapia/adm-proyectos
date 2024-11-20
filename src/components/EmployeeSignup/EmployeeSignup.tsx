@@ -10,29 +10,59 @@ import {
   Stack,
   TextField,
 } from '@fluentui/react';
-import { useRef, useState } from 'react';
-import { User } from '../../models';
+import { useEffect, useRef, useState } from 'react';
 import { IoArrowBackCircle } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
-import './EmployeeSignup.css';
+import { User } from '../../models';
 import axios from 'axios';
+import './EmployeeSignup.css';
 
 export default function EmployeeSignup() {
   // Fluent UI variables
   const stackTokens: IStackTokens = { childrenGap: 10 };
-  const optionsPuesto: IDropdownOption[] = [
-    { key: 'Gerencia', text: 'Gerencia' },
-    { key: 'Recursos Humanos', text: 'Recursos Humanos' },
-    { key: 'Finanzas', text: 'Finanzas' },
-    { key: 'Produccion', text: 'Produccion' },
-    { key: 'Ventas', text: 'Ventas' },
-  ];
+  const [optionsPuesto, setOptionsPuesto] = useState<IDropdownOption[]>([]);
+  const [optionsHorario, setOptionsHorario] = useState<IDropdownOption[]>([]);
 
-  const optionsHorario: IDropdownOption[] = [
-    { key: 'matutino', text: '8:00' },
-    { key: 'vespertino', text: '14:00' },
-    { key: 'nocturno', text: '20:00' },
-  ];
+  useEffect(() => {
+    const loadPuestos = async () => {
+      await axios
+        .get('http://localhost:8000/app/get-puestos/')
+        .then((response) => {
+          var puestos: IDropdownOption[] = [];
+          response.data.puestos.forEach((puesto: any) => {
+            puestos.push({
+              key: puesto.id,
+              text: puesto.nombre,
+            });
+          });
+          setOptionsPuesto(puestos);
+        })
+        .catch((error) =>
+          console.error('Ocurrio un error al cargar puestos. ', error)
+        );
+    };
+
+    const loadHorarios = async () => {
+      await axios
+        .get('http://localhost:8000/app/get-horarios/')
+        .then((response) => {
+          var horarios: IDropdownOption[] = [];
+          response.data.horarios.forEach((horario: any) => {
+            horarios.push({
+              key: horario.id,
+              text: horario.horario,
+            });
+          });
+          setOptionsHorario(horarios);
+        })
+        .catch((error) =>
+          console.error('Ocurrio un error al cargar horarios. ', error)
+        );
+    };
+
+    loadPuestos();
+    loadHorarios();
+  }, []);
 
   const cameraIcon: IIconProps = { iconName: 'Camera' };
 
@@ -93,8 +123,7 @@ export default function EmployeeSignup() {
     celular: '',
     direccion: '',
     puesto: '',
-    hora_entrada: '',
-    hora_salida: '',
+    horario: '',
     imagen: '',
   });
 
@@ -113,17 +142,10 @@ export default function EmployeeSignup() {
     }));
   };
 
-  const handleHoraEntradaChange = (event: any, option: any) => {
+  const handleHorarioChange = (event: any, option: any) => {
     setUserData((prevValues) => ({
       ...prevValues,
-      hora_entrada: option.key,
-    }));
-  };
-
-  const handleHoraSalidaChange = (event: any, option: any) => {
-    setUserData((prevValues) => ({
-      ...prevValues,
-      hora_salida: option.key,
+      horario: option.key,
     }));
   };
 
@@ -138,8 +160,9 @@ export default function EmployeeSignup() {
   }
 
   async function saveUser() {
+    console.log(userData);
     await axios
-      .post(`http://localhost:8000/crear-empleado/`, userData)
+      .post(`http://localhost:8000/app/crear-empleado/`, userData)
       .then((response) => {
         alert('Usuario registrado exitosamente');
         console.log(response);
@@ -151,8 +174,7 @@ export default function EmployeeSignup() {
           celular: '',
           direccion: '',
           puesto: '',
-          hora_entrada: '',
-          hora_salida: '',
+          horario: '',
           imagen: '',
         });
 
@@ -160,7 +182,7 @@ export default function EmployeeSignup() {
       })
       .catch((error) => {
         console.error('Ha ocurrido un error. ', error);
-        alert("Ocurrio un error. Intente de nuevo");
+        alert('Ocurrio un error. Intente de nuevo');
       });
   }
 
@@ -239,22 +261,13 @@ export default function EmployeeSignup() {
             className="text-input"
           />
           <Dropdown
-            label="Horario de entrada:"
+            label="Horario:"
             options={optionsHorario}
             required
             responsiveMode={ResponsiveMode.large}
             className="text-input"
-            onChange={handleHoraEntradaChange}
-            selectedKey={userData.hora_entrada}
-          />
-          <Dropdown
-            label="Horario de salida:"
-            options={optionsHorario}
-            required
-            responsiveMode={ResponsiveMode.large}
-            className="text-input"
-            onChange={handleHoraSalidaChange}
-            selectedKey={userData.hora_salida}
+            onChange={handleHorarioChange}
+            selectedKey={userData.horario}
           />
           <PrimaryButton
             text="Capturar rostro"
